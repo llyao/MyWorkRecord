@@ -1,0 +1,70 @@
+﻿@using ClientApp.Utils
+
+@{
+    ViewBag.Title = "添加用户";
+}
+
+@RenderPage("~/Views/Shared/_AdminNavLeft.cshtml")
+
+<div class="detail">
+    <table>
+        <tbody>
+        <tr>
+            <td class="textAlign_R">
+                <span class="spanTip">*</span>账户名：
+            </td>
+            <td>
+                <input type="text" id="accountText" class="normal">
+            </td>
+        </tr>
+        <tr>
+            <td class="textAlign_R">
+                <span class="spanTip">*</span>密码：
+            </td>
+            <td>
+                <input type="text" id="passworldText" class="normal" style="width: 810px;">
+            </td>
+        </tr>
+        <tr>
+            <td class="textAlign_R">
+                <span class="spanTip">*</span>权限：
+            </td>
+            <td>
+                <select id="authorityText" class="normal_select" style="width: 100px" name="authorityText">
+                    @foreach(var role in RoleType.ALL)
+                    {
+                    <option value="@role.Authority">@role.RoleName</option>
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                <button class="btn btn-info my-2 my-sm-0" type="button" onclick="addNewUserHandle()">保存</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+    function addNewUserHandle() {
+        var accountText = document.getElementById("accountText").value;
+        var passworldText = document.getElementById("passworldText").value;
+        var authority = document.getElementById("authorityText").value;
+        $.ajax({
+            type: "Post",
+            url: "/Admin/AddNewUser",
+            data: { accountText, passworldText, authority}
+        });
+        alert("操作完成");
+        document.getElementById("accountText").value = "";
+        document.getElementById("passworldText").value = "";
+    };
+
+</script>

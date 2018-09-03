@@ -1,0 +1,24 @@
+﻿///
+///通用参数定义
+///
+
+//unity所在路径定义
+UNITY_HOME=c:/Unity/Editor/Unity
+
+//svn定义
+svn.path=D:/Program Files/TortoiseSVN/bin
+svn.name=prg_wangershi
+svn.password=12345678
+svn.host=http://10.10.10.23/svn/ClientFramework
+
+//项目路径定义
+dir.projectRoot=F:/ClientFramework
+dir.releaseResource=${dir.projectRoot}/ReleaseResource
+dir.APKPath=${dir.projectRoot}/apk
+dir.builderPath=${dir.projectRoot}/PlatformBuilder
+
+//log
+log.file=${dir.projectRoot}/PlatformBuilder/log/log.txt
+
+//apk编译版本号文件
+buildNumber.apk=${dir.projectRoot}/PlatformBuilder/config/apkBuildNumber.txt

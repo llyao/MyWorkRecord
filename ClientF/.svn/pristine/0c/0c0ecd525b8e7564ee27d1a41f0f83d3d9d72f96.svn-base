@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<proto maxUID="5" classUID="1" package="NetProto">
+  <message uid="1" id="-1" name="ItemInfo" comment="道具信息">
+	<int32 name="ID" type="Int" comment="ID" />
+	<int32 name="Count" type="Int" comment="数量" />
+  </message>
+  <message uid="1" id="1001" name="GetBagItems" comment="获取背包信息">
+	<int32 name="Size" comment="格子总数"/>
+	<repeated name="ItemList" comment="道具信息" type="struct" structClassUID="1" structUID="1"/>
+  </message>
+</proto>

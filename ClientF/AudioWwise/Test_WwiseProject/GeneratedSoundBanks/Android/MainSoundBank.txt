@@ -1,0 +1,5 @@
+Event	ID	Name			Wwise Object Path	Notes
+	3330546163	TTest			\Default Work Unit\TTest	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	167383148	

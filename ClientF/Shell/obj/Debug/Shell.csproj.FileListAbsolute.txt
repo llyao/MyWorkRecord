@@ -1,0 +1,6 @@
+E:\Work\ClientFramework\Shell\Shell\bin\Debug\Shell.dll
+E:\Work\ClientFramework\Shell\Shell\bin\Debug\Shell.pdb
+E:\Work\ClientFramework\Shell\Shell\obj\Debug\Shell.csprojResolveAssemblyReference.cache
+E:\Work\ClientFramework\Shell\Shell\obj\Debug\Shell.csproj.CoreCompileInputs.cache
+E:\Work\ClientFramework\Shell\Shell\obj\Debug\Shell.dll
+E:\Work\ClientFramework\Shell\Shell\obj\Debug\Shell.pdb

@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "添加版本";
+}
+
+@RenderPage("~/Views/Shared/_AdminNavLeft.cshtml")
+
+<div class="detail">
+    <table>
+        <tbody>
+            <tr>
+                <td class="textAlign_R">
+                    <span class="spanTip">*</span>版本名字：
+                </td>
+                <td>
+                    <input type="text" id="NameText" class="normal" style="width: 410px;">
+                </td>
+            </tr>
+            <tr>
+                <td class="textAlign_R">
+                    <span class="spanTip">*</span>策划SVN：
+                </td>
+                <td>
+                    <input type="text" id="designerSvn" class="normal" style="width: 410px;">
+                </td>
+            </tr>
+            <tr>
+                <td class="textAlign_R">
+                    <span class="spanTip">*</span>程序SVN：
+                </td>
+                <td>
+                    <input type="text" id="clientSvn" class="normal" style="width: 410px;">
+                </td>
+            </tr>
+            <tr>
+                <td class="textAlign_R">
+                    <span class="spanTip">*</span>美术SVN：
+                </td>
+                <td>
+                    <input type="text" id="artSvn" class="normal" style="width: 410px;">
+                </td>
+            </tr>
+            <tr>
+                <td class="textAlign_R">
+                    <span class="spanTip">*</span>负责人联系方式：
+                </td>
+                <td>
+                    <input type="text" id="contactInfo" class="normal" style="width: 410px;">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    <button class="btn btn-info my-2 my-sm-0" type="button" onclick="AddNewVersionHandle()">保存</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+    function AddNewVersionHandle() {
+        var NameText = document.getElementById("NameText").value;
+        var designerSvn = document.getElementById("designerSvn").value;
+        var clientSvn = document.getElementById("clientSvn").value;
+        var artSvn = document.getElementById("artSvn").value;
+        var contactInfo = document.getElementById("contactInfo").value;
+        $.ajax({
+            type: "Post",
+            url: "/Admin/AddNewVersion",
+            data: { NameText, designerSvn, clientSvn, artSvn, contactInfo}
+        });
+        alert("操作完成");
+        document.getElementById("NameText").value = "";
+        document.getElementById("designerSvn").value = "";
+        document.getElementById("clientSvn").value = "";
+        document.getElementById("artSvn").value = "";
+        document.getElementById("contactInfo").value = "";
+    };
+
+</script>

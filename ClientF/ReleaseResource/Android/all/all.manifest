@@ -1,0 +1,39 @@
+ManifestFileVersion: 0
+CRC: 365326553
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: avatar/123.unity3d
+      Dependencies:
+        Dependency_0: all_ma/newmaterial.unity3d
+    Info_1:
+      Name: avatar/456.unity3d
+      Dependencies:
+        Dependency_0: all_ma/newmaterial.unity3d
+    Info_2:
+      Name: avatar/cube.unity3d
+      Dependencies:
+        Dependency_0: all_bi/obj_level_rec01.unity3d
+        Dependency_1: all_ma/newmaterial.unity3d
+    Info_3:
+      Name: avatar/789.unity3d
+      Dependencies: {}
+    Info_4:
+      Name: scenes/1.unity3d
+      Dependencies: {}
+    Info_5:
+      Name: scenes/testscene.unity3d
+      Dependencies: {}
+    Info_6:
+      Name: ui/canvastest.unity3d
+      Dependencies: {}
+    Info_7:
+      Name: all_bi/obj_level_rec01.unity3d
+      Dependencies: {}
+    Info_8:
+      Name: all_ma/newmaterial.unity3d
+      Dependencies:
+        Dependency_0: all_bi/obj_level_rec01.unity3d
+    Info_9:
+      Name: scenes/ilrunitme.unity3d
+      Dependencies: {}

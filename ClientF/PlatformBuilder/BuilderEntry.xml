@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- 平台编译的入口文件 -->
+
+<project name="BuilderEntry" basedir=".">
+
+	<target name="initConfig">			
+		<echo>initConfig......</echo>
+		<property file="./config/config.txt" />
+		<property file="./config/gameConifg.txt" />
+	</target>
+
+	<target name="update" depends="initConfig">		
+		<echo>update build files ${dir.builderPath}</echo>
+		<ant antfile="./Tools/SvnUtils.xml" target="svnrevert">
+			<property name="distdir" value="${dir.builderPath}" />
+		</ant>	
+	</target>
+	
+	<target name="buildAssetboundle" depends="update">
+		<echo>buildAssetboundle......</echo>
+		<ant antfile="Projects/BuilderAssetBundle.xml" dir="." target="buildAssetbundle">
+			<property name="platform" value="Android"/>
+		</ant>
+	</target>
+
+	<target name="buildApk" depends="update">
+		<echo>buildApk......</echo>
+		<ant antfile="Projects/BuilderApk.xml" dir="." target="buildAPK">
+			<property name="platform" value="Android"/>
+		</ant>
+	</target>
+
+	<target name="buildCoreDLL" depends="update">
+		<echo>buildCoreDLL......</echo>
+		<ant antfile="Projects/BuilderDll.xml" dir="." target="buildCoreDll">
+		</ant>
+	</target>
+	
+</project>

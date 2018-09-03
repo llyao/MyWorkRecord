@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <toggle desc="更新模块" name="update">true</toggle>
+  <toggle desc="UI模块" name="ui">true</toggle>
+  <toggle desc="网络模块" name="net">true</toggle>
+  <toggle desc="协议模块" name="netCmd">true</toggle>
+  <toggle desc="渠道SDK" name="channelSDK">false</toggle>
+  <input desc="资源服务器地址" name="resURL">
+  </input>
+  <input desc="游戏服务器地址" name="gameURL">
+  </input>
+  <input desc="包名" name="packName">
+  </input>
+  <input desc="keystore" name="keystore">
+  </input>
+  <input desc="password" name="password">
+  </input>
+  <input desc="版本号" name="versionID">
+  </input>
+  <input desc="Mini API Level" name="miniAPILevel">
+  </input>
+  <input desc="target API Level" name="targetAPILevel">
+  </input>
+  <res type="Prefabs" typeName="avatar">
+    <path>Assets/Prefabs/Avatars</path>
+    <path>Assets/Prefabs/Weapons</path>
+  </res>
+  <res type="mp3,ogg,wav" typeName="Sounds">
+    <path>Assets/Sounds</path>
+  </res>
+  <res type="unity" typeName="scenes">
+    <path>Assets/Scenes</path>
+  </res>
+  <res type="avatar" typeName="prefab">
+    <path>Assets/</path>
+  </res>
+</root>

@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewBag.Title = "History";
+}
+
+@RenderPage("~/Views/Shared/_NavLeft.cshtml")
+<div class="nav-right">
+    <h4></h4>
+    <h4></h4>
+    <h4>日志：</h4>
+    <div id="detailTxt" class="well" style="overflow-y: auto; overflow-x: hidden; white-space: pre; max-height: 800px">
+    </div>
+</div>
+
+<script type="text/javascript">
+    var timer = 0;
+    
+    var detailTxt = document.getElementById("detailTxt");
+    var params = GetParams();
+    var cmd = params["cmd"];
+    var versionID = params["versionID"];
+    var isBuild = false;
+    var prevString = "";
+
+    if (versionID != undefined && versionID > 0 && cmd != undefined && cmd.length > 0) {
+        getVersionLog();
+    } else {
+        getIsBuild();
+    }
+
+    function build() {
+        if (isBuild == true) {
+            bootbox.alert("当前有项目在构建！");
+        } else {
+            prevString = "";
+            isBuild = true;
+            clearInterval(timer);
+            timer = setInterval(running, 1000);
+
+            $.ajax({
+                type: "Post",
+                url: "/Publish/BuildAll",
+                data: {},
+                success: function (data) {
+                    /*bootbox.confirm({
+                        size: "small",
+                        message: "你确定?",
+                        callback: function (result) { alert(result)
+                        }
+                    });*/
+                }
+            });
+        }
+    };
+
+    function getIsBuild() {
+        $.ajax({
+            type: "Get",
+            url: "/Publish/IsBuilding",
+            data: {},
+            success: function (data) {
+                if (data.toString().toLocaleLowerCase() === "false") {
+                    isBuild = false;
+                    
+                    if (cmd != undefined && cmd.length > 0) {
+                        build();
+                    }
+                } else {
+                    isBuild = true;
+                    clearInterval(timer);
+                    timer = setInterval(running, 1000);
+                    running();
+                }
+            }
+        });
+    }
+
+    function getVersionLog() {
+        $.ajax({
+            type: "Get",
+            url: "/Publish/GetBuildedLog",
+            data: {cmd:cmd, versionID:versionID},
+            success: function (data) {
+                detailTxt.innerHTML = "<p>" + data + "</p>";
+            }
+        });
+    }
+
+    function running() {
+        $.ajax({
+            type: "Get",
+            url: "/Publish/IsBuilding",
+            data: {},
+            success: function (data) {
+                if (data.toString().toLocaleLowerCase() === "false") {
+                    isBuild = false;
+                    clearInterval(timer);
+                } else {
+                    isBuild = true;
+                    
+                }
+
+                $.ajax({
+                    type: "Get",
+                    url: "/Publish/GetBuildingLog",
+                    data: {},
+                    success: function (data) {
+                        var newString = data.toString().substring(prevString.length);
+                        prevString = data.toString();
+                        var array = newString.split("\n");
+                        for (var i = 0; i < array.length; i++) {
+                                
+                            detailTxt.innerHTML += "<p>" + array[i] + "</p>";
+                        }
+                            
+                        detailTxt.scrollTop = detailTxt.scrollHeight;
+                    }
+                });
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,49 @@
+2018-08-16 14:52:18,549|INFO|118|_initlog|
+
+
+
+2018-08-16 14:52:18,549|INFO|119|_initlog|logger is inited!
+2018-08-16 14:52:18,562|INFO|232|Interpreter|begin Interpreter sheet(帐号) proto:(AccountInfo), row_count = 8, col_count = 5
+2018-08-16 14:52:18,562|INFO|262|_FieldDefine|row=0, col=0, repeated_num=0
+2018-08-16 14:52:18,562|INFO|262|_FieldDefine|row=0, col=1, repeated_num=0
+2018-08-16 14:52:18,562|INFO|262|_FieldDefine|row=0, col=2, repeated_num=0
+2018-08-16 14:52:18,563|INFO|274|_FieldDefine|optional|bytes|name|姓名
+2018-08-16 14:52:18,563|INFO|262|_FieldDefine|row=0, col=3, repeated_num=0
+2018-08-16 14:52:18,563|INFO|262|_FieldDefine|row=0, col=4, repeated_num=0
+2018-08-16 14:52:18,563|INFO|274|_FieldDefine|optional|uint32|Num|姓名
+2018-08-16 14:52:18,841|INFO|549|Parse|begin parse,sheet(帐号) proto(AccountInfo) row_count = 8, col_count = 5
+2018-08-16 14:52:18,842|INFO|584|_ParseLine|5
+2018-08-16 14:52:18,842|INFO|604|_ParseField|5|2
+2018-08-16 14:52:18,842|INFO|605|_ParseField|optional|bytes|name
+2018-08-16 14:52:18,842|INFO|730|_GetFieldValue|5|2|李山
+2018-08-16 14:52:18,842|INFO|604|_ParseField|5|4
+2018-08-16 14:52:18,842|INFO|605|_ParseField|optional|uint32|Num
+2018-08-16 14:52:18,842|INFO|730|_GetFieldValue|5|4|12.0
+2018-08-16 14:52:18,842|INFO|584|_ParseLine|6
+2018-08-16 14:52:18,842|INFO|604|_ParseField|6|2
+2018-08-16 14:52:18,842|INFO|605|_ParseField|optional|bytes|name
+2018-08-16 14:52:18,842|INFO|730|_GetFieldValue|6|2|张力
+2018-08-16 14:52:18,842|INFO|604|_ParseField|6|4
+2018-08-16 14:52:18,842|INFO|605|_ParseField|optional|uint32|Num
+2018-08-16 14:52:18,842|INFO|730|_GetFieldValue|6|4|234.0
+2018-08-16 14:52:18,842|INFO|584|_ParseLine|7
+2018-08-16 14:52:18,842|INFO|604|_ParseField|7|2
+2018-08-16 14:52:18,842|INFO|605|_ParseField|optional|bytes|name
+2018-08-16 14:52:18,842|INFO|730|_GetFieldValue|7|2|翁娜
+2018-08-16 14:52:18,842|INFO|604|_ParseField|7|4
+2018-08-16 14:52:18,842|INFO|605|_ParseField|optional|uint32|Num
+2018-08-16 14:52:18,842|INFO|730|_GetFieldValue|7|4|34.0
+2018-08-16 14:52:18,842|INFO|572|Parse|parse result:
+items {
+  name: "\346\235\216\345\261\261"
+  Num: 12
+}
+items {
+  name: "\345\274\240\345\212\233"
+  Num: 234
+}
+items {
+  name: "\347\277\201\345\250\234"
+  Num: 34
+}
+

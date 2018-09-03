@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Project Version="7" InfoFilePath="C:\D301\Test\Test_WwiseProject\GeneratedSoundBanks\Android\SoundbanksInfo.xml" OutputDirectory="C:\D301\Test\Assets\StreamingAssets\Audio\GeneratedSoundBanks">
+  <ManualPackagingInfo BlockSize="1" UnassignedBanksPackageId="b259dd5a-809b-473c-a15a-dc1bf119c115" UnassignedStreamsPackageId="b259dd5a-809b-473c-a15a-dc1bf119c115" UnassignedExternalsPackageId="b259dd5a-809b-473c-a15a-dc1bf119c115" UnassignedLooseMediaPackageId="b259dd5a-809b-473c-a15a-dc1bf119c115">
+    <Packages>
+      <Package Id="b259dd5a-809b-473c-a15a-dc1bf119c115" Name="Default.pck">
+        <Items>
+          <PackageContentItem Id="534561221" Language="SFX" FileName="MainSoundBank" InclusionMode="BankAndStreamsAndLooseMedia" />
+        </Items>
+        <LayoutItems>
+          <ContentItemBase Id="0" Language="" FileName="" />
+        </LayoutItems>
+      </Package>
+    </Packages>
+    <DefaultLanguagePackageIds>
+      <LanguagePackageIds Language="SFX" BankPackageId="00000000-0000-0000-0000-000000000000" StreamPackageId="00000000-0000-0000-0000-000000000000" LooseMediaPackageId="00000000-0000-0000-0000-000000000000" />
+    </DefaultLanguagePackageIds>
+  </ManualPackagingInfo>
+</Project>

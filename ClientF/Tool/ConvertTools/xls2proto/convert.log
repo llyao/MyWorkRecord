@@ -1,0 +1,62 @@
+2018-08-21 14:24:02,088|INFO|118|_initlog|
+
+
+
+2018-08-21 14:24:02,088|INFO|119|_initlog|logger is inited!
+2018-08-21 14:24:02,102|INFO|232|Interpreter|begin Interpreter sheet(帐号) proto:(AccountInfo), row_count = 8, col_count = 5
+2018-08-21 14:24:02,104|INFO|262|_FieldDefine|row=0, col=0, repeated_num=0
+2018-08-21 14:24:02,104|INFO|262|_FieldDefine|row=0, col=1, repeated_num=0
+2018-08-21 14:24:02,104|INFO|274|_FieldDefine|optional|uint32|ID|ID
+2018-08-21 14:24:02,104|INFO|262|_FieldDefine|row=0, col=2, repeated_num=0
+2018-08-21 14:24:02,104|INFO|274|_FieldDefine|optional|bytes|name|姓名
+2018-08-21 14:24:02,104|INFO|262|_FieldDefine|row=0, col=3, repeated_num=0
+2018-08-21 14:24:02,105|INFO|274|_FieldDefine|optional|string|Des|姓名
+2018-08-21 14:24:02,105|INFO|262|_FieldDefine|row=0, col=4, repeated_num=0
+2018-08-21 14:24:02,384|INFO|549|Parse|begin parse,sheet(帐号) proto(AccountInfo) row_count = 8, col_count = 5
+2018-08-21 14:24:02,384|INFO|584|_ParseLine|5
+2018-08-21 14:24:02,384|INFO|604|_ParseField|5|1
+2018-08-21 14:24:02,384|INFO|605|_ParseField|optional|uint32|ID
+2018-08-21 14:24:02,384|INFO|730|_GetFieldValue|5|1|1.0
+2018-08-21 14:24:02,384|INFO|604|_ParseField|5|2
+2018-08-21 14:24:02,384|INFO|605|_ParseField|optional|bytes|name
+2018-08-21 14:24:02,384|INFO|730|_GetFieldValue|5|2|李山
+2018-08-21 14:24:02,384|INFO|604|_ParseField|5|3
+2018-08-21 14:24:02,384|INFO|605|_ParseField|optional|string|Des
+2018-08-21 14:24:02,384|INFO|730|_GetFieldValue|5|3|xx
+2018-08-21 14:24:02,384|INFO|584|_ParseLine|6
+2018-08-21 14:24:02,384|INFO|604|_ParseField|6|1
+2018-08-21 14:24:02,385|INFO|605|_ParseField|optional|uint32|ID
+2018-08-21 14:24:02,385|INFO|730|_GetFieldValue|6|1|2.0
+2018-08-21 14:24:02,385|INFO|604|_ParseField|6|2
+2018-08-21 14:24:02,385|INFO|605|_ParseField|optional|bytes|name
+2018-08-21 14:24:02,385|INFO|730|_GetFieldValue|6|2|张力
+2018-08-21 14:24:02,385|INFO|604|_ParseField|6|3
+2018-08-21 14:24:02,385|INFO|605|_ParseField|optional|string|Des
+2018-08-21 14:24:02,385|INFO|730|_GetFieldValue|6|3|张yy力
+2018-08-21 14:24:02,385|INFO|584|_ParseLine|7
+2018-08-21 14:24:02,385|INFO|604|_ParseField|7|1
+2018-08-21 14:24:02,385|INFO|605|_ParseField|optional|uint32|ID
+2018-08-21 14:24:02,385|INFO|730|_GetFieldValue|7|1|3.0
+2018-08-21 14:24:02,385|INFO|604|_ParseField|7|2
+2018-08-21 14:24:02,385|INFO|605|_ParseField|optional|bytes|name
+2018-08-21 14:24:02,385|INFO|730|_GetFieldValue|7|2|翁娜
+2018-08-21 14:24:02,387|INFO|604|_ParseField|7|3
+2018-08-21 14:24:02,387|INFO|605|_ParseField|optional|string|Des
+2018-08-21 14:24:02,387|INFO|730|_GetFieldValue|7|3|y
+2018-08-21 14:24:02,387|INFO|572|Parse|parse result:
+items {
+  ID: 1
+  name: "\346\235\216\345\261\261"
+  Des: "xx"
+}
+items {
+  ID: 2
+  name: "\345\274\240\345\212\233"
+  Des: "\345\274\240yy\345\212\233"
+}
+items {
+  ID: 3
+  name: "\347\277\201\345\250\234"
+  Des: "y"
+}
+

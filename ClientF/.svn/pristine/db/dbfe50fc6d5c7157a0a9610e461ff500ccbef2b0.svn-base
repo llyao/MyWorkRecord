@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <export>
+      <item name="avatar">
+		<res path="Assets/Prefabs/avatar/"/>
+		<res path="Assets/Prefabs/weapon/"/>
+	  </item>
+	  <item name "sound" ext="mp3,ogg,wav">	  	
+		<res path="Assets/Prefabs/sound/"/>		
+	  </item>
+  </export>  
+</root>

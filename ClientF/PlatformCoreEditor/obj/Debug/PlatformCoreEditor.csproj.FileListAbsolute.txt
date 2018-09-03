@@ -1,0 +1,13 @@
+E:\Work\ClientFramework\platformCoreEditor\bin\Debug\PlatformCoreEditor.dll
+E:\Work\ClientFramework\platformCoreEditor\bin\Debug\PlatformCoreEditor.pdb
+E:\Work\ClientFramework\platformCoreEditor\bin\Debug\PlatformCore.dll
+E:\Work\ClientFramework\platformCoreEditor\bin\Debug\UnityEditor.dll
+E:\Work\ClientFramework\platformCoreEditor\bin\Debug\UnityEditor.UI.dll
+E:\Work\ClientFramework\platformCoreEditor\bin\Debug\UnityEngine.dll
+E:\Work\ClientFramework\platformCoreEditor\bin\Debug\UnityEngine.UI.dll
+E:\Work\ClientFramework\platformCoreEditor\bin\Debug\PlatformCore.pdb
+E:\Work\ClientFramework\platformCoreEditor\obj\Debug\PlatformCoreEditor.csprojResolveAssemblyReference.cache
+E:\Work\ClientFramework\platformCoreEditor\obj\Debug\PlatformCoreEditor.csproj.CoreCompileInputs.cache
+E:\Work\ClientFramework\platformCoreEditor\obj\Debug\PlatformCoreEditor.csproj.CopyComplete
+E:\Work\ClientFramework\platformCoreEditor\obj\Debug\PlatformCoreEditor.dll
+E:\Work\ClientFramework\platformCoreEditor\obj\Debug\PlatformCoreEditor.pdb

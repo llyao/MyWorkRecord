@@ -1,0 +1,214 @@
+﻿@using ClientApp.XmlData
+@{
+    ViewBag.Title = "分类管理";
+}
+
+@RenderPage("~/Views/Shared/_NavLeft.cshtml")
+
+<div class="nav-right">
+    <button id="addBtn" style="margin: 5px;" type="button" class="btn btn-warning" onclick="addClass()">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加新分类
+    </button>
+    <p id="itemContainer" class='well' style="margin-top: 20px;">
+    </p>
+    <p style="margin-top: 0px;">
+    <button id="removeBtn" style="margin: 5px;" type="button" class="btn btn-danger" onclick="deleteHandle()">
+        删除
+    </button>
+    <button id="editBtn" style="margin: 5px;" type="button" class="btn btn-info" onclick="editHandle()">
+        编辑
+    </button>
+    </p>
+</div>
+
+<script type="text/javascript">
+    function isInteger(obj) {
+        return Math.round(obj) === obj; //是整数，则返回true，否则返回false
+    }
+
+    var selectedClass = "btn btn-primary";
+    var unselectedClass = "btn btn-default";
+    var currentSelectIndex = -1;
+
+    getProtoList();
+
+    function getProtoList() {
+        $.ajax({
+            type: "Post",
+            dataType:"json", 
+            url: "/Protocol/GetProtoList",
+            data: {},
+            success: function (data) {
+                if (data.Success.toString().toLocaleLowerCase() == "false") {
+                    bootbox.alert(data.Message);
+                } else {
+                    currentSelectIndex = -1;
+                    var list = data.Items;
+                    document.getElementById("itemContainer").innerHTML = "";
+                    var result = "";
+                    for (var i = 0; i < list.length; i++) {
+                        result += '<button style="margin: 5px;" id="item_' + list[i].UID + '" type="button" class="btn btn-default" onclick="itemClickHandle(event)">【' +
+                            list[i].Desc + '(' + list[i].Name + ')】     ID段：' + list[i].StartID + '-' + list[i].EndID + 
+                            '</button>';
+                    }
+                    document.getElementById("itemContainer").innerHTML = result;
+                }
+            }
+        });
+    }
+
+    function itemClickHandle(event) {
+        var index = event.target.id.substr(5);
+        if (event.target.className == selectedClass) {
+            event.target.className = unselectedClass;
+            setSelectedIndex(-1);
+        } else {
+            event.target.className = selectedClass;
+
+            if (currentSelectIndex != -1) {
+                var oldItem = document.getElementById("item_" + currentSelectIndex);
+                if (oldItem != undefined) {
+                    oldItem.className = unselectedClass;
+                }
+            }
+
+            setSelectedIndex(index);
+        }
+    }
+
+    function setSelectedIndex(index) {
+        currentSelectIndex = index;
+    }
+
+    function deleteHandle() {
+        var oldItem = document.getElementById("item_" + currentSelectIndex);
+        if (oldItem == undefined) {
+            bootbox.alert("请选择一个分类！");
+            return;
+        }
+        bootbox.confirm({
+            title : "删除确认",
+            message: "删除该分类，会删除分类底下所有的协议，请万分小心！确认删除？？？？？", 
+            buttons: {
+                confirm: {
+                    label: "确定"
+                },
+                cancel:{
+                    label:"取消"
+                        
+                }
+            },        
+            callback: function(result) {
+                if(result) {
+                    $.ajax({
+                        type: "Post",
+                        dataType:"json", 
+                        url: "/Protocol/DeleteClass",
+                        data: { id: currentSelectIndex},
+                        success: function (data) {
+                            if (data.Success.toString().toLocaleLowerCase() == "false") {
+                                bootbox.alert(data.Message);
+                            } else {
+                                getProtoList();
+                            }
+                        }
+                    });
+                }
+                    
+            }
+        });
+    }
+
+    function editHandle() {
+        var oldItem = document.getElementById("item_" + currentSelectIndex);
+        if (oldItem == undefined) {
+            bootbox.alert("请选择一个分类！");
+            return;
+        }
+        alert(currentSelectIndex);
+        $.ajax({
+            type: "Post",
+            dataType:"json", 
+            url: "/Protocol/GetProtoByID",
+            data: { id: currentSelectIndex},
+            success: function (data) {
+                if (data.Success.toString().toLocaleLowerCase() == "false") {
+                    bootbox.alert(data.Message);
+                } else {
+                    showEditPanel(data.Items[0].UID, "编辑分类", data.Items[0].Desc, data.Items[0].Name, data.Items[0].StartID, data.Items[0].EndID);
+                }
+            }
+        });
+    }
+
+    function addClass() {
+        showEditPanel(-1, "添加分类", "", "", "", "");
+    }
+
+    function showEditPanel(id, title, desc, name, startID, endID) {
+        bootbox.dialog({
+            title: title,
+            message: "<div class='well' style='margin-top:0px;'>" +
+                "<form class='form-horizontal' role='form'>" +
+                "<div class='form-group'>" +
+                "<label class='col-sm-3 control-label no-padding-right' for='txtOldPwd'>分类名称</label>" +
+                "<div class='col-sm-9'><input type='text' id='typeDesc' placeholder='' class='col-xs-10 col-sm-5' value='" + desc + "'/></div>" +
+                "</div><div class='space-4'></div><div class='form-group'>" +
+                "<label class='col-sm-3 control-label no-padding-right' for='txtOldPwd'>Protocol名称</label>" +
+                "<div class='col-sm-9'><input type='text' id='typeName' placeholder='最好填英文' class='col-xs-10 col-sm-5' value='" + name + "'>" +
+                "</div></div><div class='space-4'></div><div class='form-group'><label class='col-sm-3 control-label no-padding-right' for='txtNewPwd1'>起始ID</label>" +
+                "<div class='col-sm-9'><input type='number' id='beginID' placeholder='输入ID' class='col-xs-10 col-sm-5'  value='" + startID + "'/></div></div>" +
+                "<div class='space-4'>" +
+                "</div><div class='form-group'>" +
+                "<label class='col-sm-3 control-label no-padding-right' for='txtNewPwd2'>终止ID</label>" +
+                "<div class='col-sm-9'><input type='number' id='endID' placeholder='输入ID' class='col-xs-10 col-sm-5' value='" + endID + "' /></div></div></form></div>",
+            buttons: {
+                "success": {
+                    "label": "<i class='icon-ok'></i> 保存",
+                    "className": "btn-sm btn-success",
+                    "callback": function() {
+                        var txt1 = $("#typeName").val();
+                        var desc = $("#typeDesc").val();
+                        var txt2 = $("#beginID").val();
+                        var txt3 = $("#endID").val();
+                        var startId = parseInt(txt2);
+                        var endID = parseInt(txt3);
+
+                        if (desc == "" || txt2 == "" || txt3 == "") {
+                            bootbox.alert("输入内容不能为空");
+                            return false;
+                        }
+                        if (startId < 0 || endID < 0) {
+                            bootbox.alert("输入的ID不能小于0!");
+                            return false;
+                        }
+
+                        if (startId >= endID) {
+                            bootbox.alert("起始ID必须比终止ID小!");
+                            return false;
+                        }
+
+                        $.ajax({
+                            type: "Post",
+                            dataType:"json", 
+                            url: "/Protocol/AddClassification",
+                            data: { id:id, name: txt1, desc:desc, startID: startId, endID: endID},
+                            success: function (data) {
+                                if (data.Success.toString().toLocaleLowerCase() == "false") {
+                                    bootbox.alert(data.Message);
+                                } else {
+                                    getProtoList();
+                                }
+                            }
+                        });
+                    }
+                },
+                "cancel": {
+                    "label": "<i class='icon-info'></i> 取消",
+                    "className": "btn-sm btn-danger",
+                    "callback": function() {}
+                }
+            }
+        });
+    }
+</script>

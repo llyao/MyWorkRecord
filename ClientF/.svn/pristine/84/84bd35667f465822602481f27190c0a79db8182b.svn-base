@@ -1,0 +1,106 @@
+﻿@using ClientApp.DB
+@using ClientCore.DB
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 360游戏艺术</title>
+    <link href="/Content/member.css" rel="stylesheet" />
+    <link href="/Content/footer.css" rel="stylesheet" />
+    <link href="/Content/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+</head>
+<body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("360游戏艺术", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("主页", "Index", "Home")</li>
+                    <li>@Html.ActionLink("关于", "About", "Home")</li>
+                    <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>
+                </ul>
+                @{
+                    if (Session["user"] != null)
+                    {
+                        var user = (Session["user"] as UserTableData);
+                        var email = user.Nick + " 退出";
+
+                        if (user.Authority == 1024)
+                        {
+                            <button style="margin-top: 7px;" class="btn btn-warning my-2 my-sm-0" type="button" onclick="javascript: window.location = '/Admin/Index'">管理员中心</button>
+                        }
+
+                        <button style="margin-top: 7px;" class="btn btn-success my-2 my-sm-0" type="button" onclick="logoff()">@email</button>
+                    }
+                    else
+                    {
+                        <button style="margin-top: 7px;" class="btn btn-success my-2 my-sm-0" type="button" onclick="login()">登录</button>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+
+        function login() {
+            $.ajax({
+                type: "Post",
+                url: "/Login/Index",
+                data: {}
+            });
+            javascript: window.location = '/Login/Index';
+        }
+        function logoff() {
+            $.ajax({
+                type: "Post",
+                url: "/Login/LogOff",
+                data: {}
+            });
+            javascript: window.location = '/Login/LogOff';
+        }
+
+        function getElement(id) {
+            return document.getElementById(id);
+        }
+
+        function GetParams() {
+
+            var url = location.search; //获取url中"?"符后的字串
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for(var i = 0; i < strs.length; i ++) {
+                    theRequest[strs[i].split("=")[0]]=(strs[i].split("=")[1]);
+                }
+            }
+            return theRequest;
+        }
+
+    </script>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+    </div>
+    @RenderPage("~/Views/Shared/_Footer.cshtml")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

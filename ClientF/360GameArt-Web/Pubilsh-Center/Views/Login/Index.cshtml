@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "登录";
+}
+
+<div class="form-signin" onkeyup="KeyDown()">
+    <link href="/Content/signin.css" rel="stylesheet">
+    @{var returnUrl = Request.QueryString["Url"];}
+    @using (Html.BeginForm("Index", "Login", FormMethod.Post))
+    {
+        @Html.Hidden("ReturnUrl", returnUrl)
+        <h2 class="form-signin-heading">请登录</h2>
+        <label for="inputEmail" class="sr-only">
+        </label>
+        <input type="text" id="inputEmail" name="EmailAddress" class="form-control" placeholder="请输入账号" required autofocus>
+        <h4></h4>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" name="Password" class="form-control" placeholder="请输入密码" required>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="RememberMe" value="remember-me"> 记住我
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="loginHandle()">登录</button>
+    }
+</div>
+
+<script type="text/javascript">
+    var inputEmail = document.getElementById("inputEmail");
+    var inputPassword = document.getElementById("inputPassword");
+    var params = GetParams();
+
+    function KeyDown()
+    {
+        if (event.keyCode == 13)
+        {
+            event.returnValue=false;
+            event.cancel = true;
+            loginHandle();
+        }
+    }
+
+    function loginHandle() {
+        if (inputEmail.value.length == 0) {
+            bootbox.alert("用户名不能为空！");
+            return;
+        } 
+        if (inputPassword.value.length == 0) {
+            bootbox.alert("密码不能为空！");
+            return;
+        }
+        doLogin();
+    };
+
+    function doLogin() {
+        $.ajax({
+            type: "Post",
+            dataType:"json", 
+            url: "/Login/Login",
+            data: { EmailAddress: inputEmail.value, Password: inputPassword.value, ReturnUrl: params["URL"]},
+            success: function (data) {
+                if (data.Success.toString().toLocaleLowerCase() == "false") {
+                    bootbox.alert(data.Message);
+                } else {
+                    if (params["url"] != undefined && params["url"].length > 0) {
+                        window.location.href = "../" + params["url"];
+                    } else {
+                        window.location.href = "/Home/Index";
+                    }
+                }
+            }
+        });
+    }
+
+</script>

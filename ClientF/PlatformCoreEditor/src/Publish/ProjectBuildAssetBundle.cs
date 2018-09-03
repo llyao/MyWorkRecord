@@ -1,0 +1,469 @@
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Net.Configuration;
+using platformCoreEditor;
+using UnityEditor;
+using UnityEditor.Sprites;
+using PlatformCoreEditor;
+using PlatformCore ;
+using UnityEngine;
+using System;
+using System.Diagnostics;
+using JetBrains.Annotations;
+using Debug = UnityEngine.Debug;
+
+public class AssetBoundleInfoD
+{
+    public EditorConfig mEditorConfig;
+    public BuildTarget mBuildTarget;
+    public BuildTargetGroup mBuildTargetGroup;
+    public bool mBFourceRebuild;
+    public bool mBCompress;
+    public string mExportToPath = "";
+}
+
+class ProjectBuildAssetBundle
+{
+    protected const string U3DExt = ".unity3d";
+
+    protected const string BITMAPS = "bi";
+    protected const string SOUNDS = "so";
+    protected const string ASSETS = "a";
+    protected const string OBJS = "obj";
+    protected const string SHADERS = "sh";
+    protected const string MATERIALS = "ma";
+    protected const string FBXS = "fbx";
+    protected const string ANIMS = "ani";
+    protected const string PREFABS = "pr";
+    protected const string PLAYABLES = "pl";
+    protected const string CONTROLLERS = "con";
+    protected const string OTHERS = "ot";
+
+    public static Dictionary<string, string[]> sDependenceMap = new Dictionary<string, string[]>();
+
+    protected static Dictionary<string, HashSet<string>> sToUnityPathMapping = new Dictionary<string, HashSet<string>>();
+
+    protected static Dictionary<string, int> sAssetsReferenceCounter = new Dictionary<string, int>();
+    protected static Dictionary<string, AssetBundleBuild> sAssetBundleReferences = new Dictionary<string, AssetBundleBuild>();
+
+    protected static Dictionary<string, int> sPrefabDirMaping = new Dictionary<string, int>();
+
+    static ProjectBuildAssetBundle()
+    {
+        sToUnityPathMapping.Add(BITMAPS, new HashSet<string>());
+        sToUnityPathMapping.Add(SOUNDS, new HashSet<string>());
+        sToUnityPathMapping.Add(ASSETS, new HashSet<string>());
+        sToUnityPathMapping.Add(SHADERS, new HashSet<string>());
+        sToUnityPathMapping.Add(MATERIALS, new HashSet<string>());
+        sToUnityPathMapping.Add(OBJS, new HashSet<string>());
+        sToUnityPathMapping.Add(FBXS, new HashSet<string>());
+        sToUnityPathMapping.Add(ANIMS, new HashSet<string>());
+        sToUnityPathMapping.Add(CONTROLLERS, new HashSet<string>());
+        sToUnityPathMapping.Add(PLAYABLES, new HashSet<string>());
+        sToUnityPathMapping.Add(PREFABS, new HashSet<string>());
+        sToUnityPathMapping.Add(OTHERS, new HashSet<string>());
+    }
+
+        [MenuItem("360/BuildAB")]
+        private static void TestBuildAB()
+        {
+            AssetBoundleInfoD info = new AssetBoundleInfoD();
+            info.mEditorConfig = new EditorConfig();
+            info.mBuildTarget = BuildTarget.Android;
+            info.mBuildTargetGroup = BuildTargetGroup.Android;
+            info.mBFourceRebuild = false;
+            info.mBCompress = true;
+            info.mExportToPath = "ReleaseResource";
+    
+            BuildAssetBoundle(info);
+        }
+    private static void addDepend(string key, string depend, string prefabPath)
+    {
+        int v;
+        if (sAssetsReferenceCounter.TryGetValue(depend, out v))
+        {
+            sAssetsReferenceCounter[depend] = v + 1;
+        }
+        else
+        {
+            sAssetsReferenceCounter[depend] = 1;
+        }
+
+        HashSet<string> hashSet = null;
+        if (sToUnityPathMapping.TryGetValue(key, out hashSet) == false)
+        {
+            hashSet = sToUnityPathMapping[OTHERS];
+        }
+
+        hashSet.Add(depend);
+    }
+
+    //外部打包调用
+    public static void AutoBuildAssetBoundle()
+    {
+        AssetBoundleInfoD info = new AssetBoundleInfoD();
+        info.mEditorConfig = new EditorConfig();
+        info.mBuildTarget = BuildTarget.Android;
+        info.mBuildTargetGroup = BuildTargetGroup.Android;
+        info.mBFourceRebuild = true;
+        info.mBCompress = false;
+
+        string[] args = Environment.GetCommandLineArgs();
+        if (args.Length < 0)
+            return;
+
+        int idx = Array.IndexOf(args, "-exportTo");
+        if(idx != -1)
+            info.mExportToPath = args[idx +1];
+
+        Debug.Log("ExportTo:" + info.mExportToPath);
+        
+        try
+        {
+            BuildAssetBoundle(info);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("失败:" + e.Message);
+        }
+    }
+
+    //    public static string RunPython(string program, string cmd)
+    //    {
+    //        ProcessStartInfo start = new ProcessStartInfo();
+    //        start.FileName = "python.exe";
+    //        start.Arguments = program + " " + cmd;
+    //        start.UseShellExecute = false;          // Do not use OS shell
+    //        start.CreateNoWindow = true;            // We don't need new window
+    //        start.RedirectStandardOutput = true;    // Any output, generated by application will be redirected back
+    //        start.RedirectStandardError = true;     // Any error in standard output will be redirected back (for example exceptions)
+    //        using (Process process = Process.Start(start))
+    //        {
+    //            using (StreamReader reader = process.StandardOutput)
+    //            {
+    //                string result = process.StandardError.ReadToEnd();
+    //                if (result == null || result == "")
+    //                {
+    //                    result = reader.ReadToEnd();
+    //                }
+    //                return result;
+    //            }
+    //        }
+    //    }
+
+    //    [MenuItem("360/MakeHash")]
+    //    private static void MakeHash()
+    //    {
+    //        string result = RunPython(Application.dataPath + "/python/getHashList.py ", "E:\\Work\\ClientFramework\\TestGame\\ReleaseResource " + "C:\\xampp\\htdocs\\Platform\\ReleaseResources\\v.txt " + "/Android/,/all/,/config/");
+    //        Debug.Log(result);
+    //    }
+    public static void BuildAssetBoundle(AssetBoundleInfoD info_)
+    {
+        ProjectBuildSetting.Init();
+
+        initBuild();
+
+        //重新构建Atlas
+        Packer.RebuildAtlasCacheIfNeeded(info_.mBuildTarget, true, Packer.Execution.Normal);
+
+        List<ExportPrefabItem> prefabLst = new List<ExportPrefabItem>();
+        foreach (ExportConfigItem item in info_.mEditorConfig.mConfigItemLst)
+        {//遍历配置
+            foreach (string resPath in item.resPathLst)
+            {//遍历目录
+                List<string> fileLst = FileFunc.FindFile(resPath, item.extLst);
+                foreach (string fileName in fileLst)
+                {
+                    ExportPrefabItem prefabItem = new ExportPrefabItem();
+                    prefabItem.mPathName = fileName.Replace(Application.dataPath, "Assets");
+                    prefabItem.configItem = item;
+                    prefabLst.Add(prefabItem);
+                }
+            }
+        }
+
+        ExportPrefabs(prefabLst, info_);
+    }
+
+
+    protected static List<AssetBundleBuild> collectionPrefab(ExportPrefabItem prefabItem_)
+    {
+        string prefabPath = prefabItem_.mPathName;
+        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(prefabPath).Trim();
+        fileNameWithoutExtension = FileFunc.FileNameFormat(fileNameWithoutExtension);
+        string fileExtension = Path.GetExtension(prefabPath).ToLower();
+        //是否是个scene场景;
+        bool isScene = (fileExtension == ".unity");
+
+        string[] dependence = GetDependence(prefabPath);
+        HashSet<string> toRemovesSet = new HashSet<string>();
+        //收集嵌套的prefab;
+        getInnerPrefabDepend(prefabPath, dependence, toRemovesSet);
+
+        List<AssetBundleBuild> builds = new List<AssetBundleBuild>();
+        foreach (string depend in dependence)
+        {
+            if (toRemovesSet.Contains(depend) == true)
+                continue;
+
+            string extension = Path.GetExtension(depend).ToLower();
+            switch (extension)
+            {
+                case ".jpg":
+                case ".png":
+                case ".psd":
+                case ".tif":
+                case ".dds":
+                case ".tga":
+                case ".ttf":
+                case ".cubemap":
+                    addDepend(BITMAPS, depend, prefabPath);
+                    break;
+                case ".wav":
+                case ".mp3":
+                case ".mp4":
+                case ".ogg":
+                    addDepend(SOUNDS, depend, prefabPath);
+                    break;
+                case ".exr":
+                    //独立掉这个会丢失lightmap
+                    break;
+                case ".shader":
+                    addDepend(SHADERS, depend, prefabPath);
+                    break;
+                case ".mat":
+                    ///材质只加入到通用列表里面(区分一个包名,两个打包项的同名同路径在unity里面认为是同一个文件)
+                    addDepend(MATERIALS, depend, prefabPath);
+                    break;
+                case ".dll":
+                case ".cs":
+                    break;
+                case ".obj":
+                    if (isScene == false)
+                    {
+                        addDepend(OBJS, depend, prefabPath);
+                    }
+                    break;
+                case ".fbx":
+                    if (isScene == false)
+                    {
+                        addDepend(FBXS, depend, prefabPath);
+                    }
+                    break;
+                case ".anim":
+                    addDepend(ANIMS, depend, prefabPath);
+                    break;
+                case ".playable":
+                    addDepend(PLAYABLES, depend, prefabPath);
+                    break;
+                case ".controller":
+                    addDepend(CONTROLLERS, depend, prefabPath);
+                    break;
+                case ".asset":
+                    break;
+                case ".prefab":
+                case ".unity":
+                    //不用加进去;
+                    //addDepend(PREFABS, depend, prefabPath);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        string fileName = fileNameWithoutExtension + ProjectBuildAssetBundle.U3DExt;
+        string folder = prefabItem_.configItem.name;
+        if (string.IsNullOrEmpty(folder) == false)
+        {
+            fileName = folder + "/" + fileName;
+        }
+
+        AssetBundleBuild build = new AssetBundleBuild();
+        build.assetBundleName = fileName;
+        build.assetNames = new string[] { prefabPath };
+        builds.Add(build);
+
+        sAssetBundleReferences.Add(prefabPath, build);
+
+        return builds;
+    }
+
+
+    public static bool ExportPrefabs(List<ExportPrefabItem> lst_, AssetBoundleInfoD info_)
+    {
+        int len = lst_.Count;
+        int i = 0;
+        List<AssetBundleBuild> builds = new List<AssetBundleBuild>();
+        foreach (ExportPrefabItem item in lst_)
+        {
+            List<AssetBundleBuild> tempList = collectionPrefab(item);
+            if (tempList.Count > 0)
+            {
+                builds.AddRange(tempList);
+            }
+
+            ShowProgress(i++, len);
+        }
+
+        EditorUtility.ClearProgressBar();
+        HashSet<string> bitmaps = sToUnityPathMapping[BITMAPS];
+        List<string> toRemoveBitmap = new List<string>();
+        foreach (string bitmap in bitmaps)
+        {
+            TextureImporter importer = TextureImporter.GetAtPath(bitmap) as TextureImporter;
+            if (importer == null)
+                continue;
+
+            string spritePackingTag = importer.spritePackingTag;
+            if (string.IsNullOrEmpty(spritePackingTag))
+                continue;
+
+            toRemoveBitmap.Add(bitmap);
+            AssetBundleBuild build = new AssetBundleBuild();
+            string assetBundleName = "sp/" + spritePackingTag + ProjectBuildAssetBundle.U3DExt;
+            build.assetBundleName = assetBundleName;
+            build.assetNames = new string[] { bitmap };
+
+            builds.Add(build);
+            sAssetBundleReferences.Add(bitmap, build);
+        }
+
+        foreach (string bitmap in toRemoveBitmap)
+            bitmaps.Remove(bitmap);
+
+        foreach (string key in sToUnityPathMapping.Keys)
+        {
+            HashSet<string> itemList = sToUnityPathMapping[key];
+            foreach (string item in itemList)
+            {
+                if (sAssetsReferenceCounter[item] == 1)
+                {
+                    continue;
+                }
+
+                string keyFolder = info_.mEditorConfig.mRootName + "_" + key;
+
+                string fileName = Path.GetFileNameWithoutExtension(item).Trim();
+                fileName = FileFunc.FileNameFormat(fileName);
+                string assetBundleName = keyFolder + "/" + fileName + ProjectBuildAssetBundle.U3DExt;
+
+                int hasIndex;
+                if (sPrefabDirMaping.TryGetValue(assetBundleName, out hasIndex))
+                {
+                    sPrefabDirMaping[assetBundleName] = hasIndex + 1;
+                    assetBundleName = keyFolder + "/" + fileName + "_A" + (hasIndex + 1) + ProjectBuildAssetBundle.U3DExt;
+                }
+                else
+                {
+                    sPrefabDirMaping.Add(assetBundleName, 0);
+                }
+
+                AssetBundleBuild build;
+                if (sAssetBundleReferences.TryGetValue(item, out build) == false)
+                {
+                    build = new AssetBundleBuild();
+                    build.assetBundleName = assetBundleName;
+                    build.assetNames = new string[] { item };
+                    builds.Add(build);
+                    sAssetBundleReferences.Add(item, build);
+                }
+            }
+        }
+
+        try
+        {
+            string exportPlatformRootPath = Path.Combine(info_.mExportToPath, info_.mBuildTarget.ToString() + "/" + info_.mEditorConfig.mRootName);
+            if (Directory.Exists(exportPlatformRootPath) == false)
+            {
+                Directory.CreateDirectory(exportPlatformRootPath);
+            }
+
+            BuildAssetBundleOptions options = BuildAssetBundleOptions.None |
+                                              BuildAssetBundleOptions.DeterministicAssetBundle; //|BuildAssetBundleOptions.StrictMode;
+            if (info_.mBCompress == true)
+            {
+                options = options | BuildAssetBundleOptions.ChunkBasedCompression;
+            }
+
+            if (info_.mBFourceRebuild == true)
+            {
+                options = options | BuildAssetBundleOptions.ForceRebuildAssetBundle;
+            }
+
+            BuildPipeline.BuildAssetBundles(exportPlatformRootPath, builds.ToArray(),
+                options, info_.mBuildTarget);
+
+            AssetDatabase.Refresh();
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log("失败:" + e.Message);
+            return false;
+        }
+        finally
+        {
+            initBuild();
+        }
+
+        return true;
+    }
+
+    private static void getInnerPrefabDepend(string outerPrefabPath, string[] outerDepends,
+        HashSet<string> inInnerPrefabAssets)
+    {
+        foreach (string depend in outerDepends)
+        {
+            if (depend == outerPrefabPath)
+            {
+                continue;
+            }
+
+            string extension = Path.GetExtension(depend).ToLower();
+            if (extension == ".prefab")
+            {
+                string[] innerDepends = GetDependence(depend);
+                foreach (string innerDepend in innerDepends)
+                {
+                    if (innerDepend != depend)
+                    {
+                        inInnerPrefabAssets.Add(innerDepend);
+                    }
+                }
+            }
+        }
+    }
+
+    protected static void initBuild()
+    {
+        foreach (HashSet<string> hashSet in sToUnityPathMapping.Values)
+            hashSet.Clear();
+
+        sDependenceMap.Clear();
+        sAssetsReferenceCounter.Clear();
+        sAssetBundleReferences.Clear();
+
+        sPrefabDirMaping.Clear();
+    }
+
+    
+    public static void ShowProgress(int cur, int total)
+    {
+        float val = cur / (float)total;
+        EditorUtility.DisplayProgressBar("Searching",
+            string.Format("Finding ({0}/{1}), please wait...", cur, total), val);
+    }
+
+    
+    public static string[] GetDependence(string prefab)
+    {
+        string[] result = null;
+        if (sDependenceMap.TryGetValue(prefab, out result) == false)
+        {
+            result = AssetDatabase.GetDependencies(new string[] { prefab });
+            sDependenceMap.Add(prefab, result);
+        }
+
+        return result;
+    }
+}

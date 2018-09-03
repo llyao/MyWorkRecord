@@ -1,0 +1,76 @@
+
+<project name="Builder">
+
+<!--=============================================-->
+
+	<target name="initConfig">
+		<property file="./config/config.txt" />
+		<property file="./config/gameConfig.txt" />
+	</target>
+
+<!--=============================================-->
+
+	<target name="update" depends="initConfig">		
+		<echo>${dir.projectRoot}/${dir.projectName}</echo>
+		<ant antfile="./Tools/SvnUtils.xml" target="svnrevert">
+			<property name="distdir" value="${dir.projectRoot}/${dir.projectName}" />
+		</ant>	
+		<ant antfile="./Tools/SvnUtils.xml" target="svnrevert">
+			<property name="distdir" value="${dir.releaseResource}" />
+		</ant>
+	</target>	
+	
+<!--=============================================-->
+
+	<target name="buildAPK" depends="update">
+		<property name="projectPath" value="${dir.projectRoot}/${dir.projectName}"/>
+
+		<echo>unity buildApk project : ${projectPath} exportTo : ${dir.APKPath}</echo>
+
+		<buildnumber file="${buildNumber.apk}" />
+
+		<tstamp>
+			<format property="tname" pattern="yyMMdd" />
+		</tstamp>
+
+		<exec executable="${UNITY_HOME}" resultproperty="resultV">
+			<arg value="-projectPath" />
+			<arg value="${projectPath}" />
+			<arg value="-executeMethod"/>
+			<arg value="ProjectBuildApk.BuildAPK"/>			
+			<arg value="-scene" />
+			<arg value="${game.startScene}" />
+			<arg value="-buildTarget" />
+			<arg value="${platform}" />
+			<arg value="-releasePath" />
+			<arg value="${dir.APKPath}/${dir.projectName}_${tname}_${game.bundleVersion}.${build.number}.apk" />
+			<arg value="-bundleVersion" />
+			<arg value="${game.bundleVersion}" />
+			<arg value="-buildNumber" />
+			<arg value="${build.number}" />
+			<arg value="-bundleIdentifier" />
+			<arg value="${sign.bundleIdentifier}" />
+			<arg value="-displayName" />
+			<arg value="${dir.projectName}" />
+			<arg value="-signFile" />
+			<arg value="${sign.signFile}" />
+			<arg value="-isDebug" />
+			<arg value="${isDebug}" />
+			<arg value="-nographics" />
+			<arg value="-batchmode" />
+			<arg value="-quit" />
+			<arg value="-logFile" />
+			<arg value="${log.file}" />			
+			<arg value="keyaliasName" />
+			<arg value="${sign.keyaliasName}" />
+			<arg value="keyaliasPass" />
+			<arg value="${sign.keyaliasPass}" />
+			<arg value="keystorePass" />
+			<arg value="${sign.keystorePass}" />
+		</exec>
+
+	</target>
+
+<!--=============================================-->
+
+</project>

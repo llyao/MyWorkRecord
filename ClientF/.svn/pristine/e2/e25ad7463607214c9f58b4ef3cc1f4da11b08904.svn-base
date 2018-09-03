@@ -1,0 +1,5 @@
+﻿//log所在路径定义
+LOG=UserData/log/log_{0}.txt
+
+//项目配置的文件，参数为版本id
+VERSION_SETTING=UserData/versions/setting_{0}.xml

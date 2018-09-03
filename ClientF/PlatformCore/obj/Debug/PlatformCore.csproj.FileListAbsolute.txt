@@ -1,0 +1,10 @@
+E:\Work\ClientFramework\platformCore\bin\Debug\PlatformCore.dll
+E:\Work\ClientFramework\platformCore\bin\Debug\PlatformCore.pdb
+E:\Work\ClientFramework\platformCore\bin\Debug\UnityEditor.dll
+E:\Work\ClientFramework\platformCore\bin\Debug\UnityEditor.UI.dll
+E:\Work\ClientFramework\platformCore\bin\Debug\UnityEngine.dll
+E:\Work\ClientFramework\platformCore\bin\Debug\UnityEngine.UI.dll
+E:\Work\ClientFramework\platformCore\obj\Debug\PlatformCore.csproj.CoreCompileInputs.cache
+E:\Work\ClientFramework\platformCore\obj\Debug\PlatformCore.csproj.CopyComplete
+E:\Work\ClientFramework\platformCore\obj\Debug\PlatformCore.dll
+E:\Work\ClientFramework\platformCore\obj\Debug\PlatformCore.pdb

@@ -1,0 +1,93 @@
+﻿@using ClientApp.XmlData
+@{
+    ViewBag.Title = "添加协议";
+}
+
+@RenderPage("~/Views/Shared/_NavLeft.cshtml")
+
+<div class="nav-right">
+    <h2>选择要添加的分类</h2>
+    <p id="itemContainer" class='well' style="margin-top: 20px;">
+    </p>
+    <p style="margin-top: 0px;">
+        <button id="removeBtn" style="margin: 5px;" type="button" class="btn btn-info" onclick="confirmHandle()">
+            确认
+        </button>
+    </p>
+</div>
+
+<script type="text/javascript">
+    function isInteger(obj) {
+        return Math.round(obj) === obj; //是整数，则返回true，否则返回false
+    }
+
+    var selectedClass = "btn btn-primary";
+    var unselectedClass = "btn btn-default";
+    var currentSelectIndex = -1;
+
+    getProtoList();
+
+    function getProtoList() {
+        $.ajax({
+            type: "Post",
+            dataType:"json", 
+            url: "/Protocol/GetProtoList",
+            data: {},
+            success: function (data) {
+                if (data.Success.toString().toLocaleLowerCase() == "false") {
+                    bootbox.alert(data.Message);
+                } else {
+                    currentSelectIndex = -1;
+                    var list = data.Items;
+                    document.getElementById("itemContainer").innerHTML = "";
+                    var result = "";
+                    for (var i = 0; i < list.length; i++) {
+                        result += '<button style="margin: 5px;" id="item_' + list[i].UID + '" type="button" class="btn btn-default" onclick="itemClickHandle(event)">【' +
+                            list[i].Desc + '(' + list[i].Name + ')】     ID段：' + list[i].StartID + '-' + list[i].EndID + 
+                            '</button>';
+                    }
+                    document.getElementById("itemContainer").innerHTML = result;
+                }
+            }
+        });
+    }
+
+    function itemClickHandle(event) {
+        var index = event.target.id.substr(5);
+        if (event.target.className == selectedClass) {
+            event.target.className = unselectedClass;
+            setSelectedIndex(-1);
+        } else {
+            event.target.className = selectedClass;
+
+            if (currentSelectIndex != -1) {
+                var oldItem = document.getElementById("item_" + currentSelectIndex);
+                if (oldItem != undefined) {
+                    oldItem.className = unselectedClass;
+                }
+            }
+
+            setSelectedIndex(index);
+        }
+    }
+
+    function setSelectedIndex(index) {
+        currentSelectIndex = index;
+    }
+
+
+    function confirmHandle() {
+        var oldItem = document.getElementById("item_" + currentSelectIndex);
+        if (oldItem == undefined) {
+            bootbox.alert("请选择一个分类！");
+            return;
+        }
+        window.location.href = "/Protocol/AddProtoDetail?id=" + currentSelectIndex;
+       /* $.ajax({
+            type: "Post",
+            dataType:"json", 
+            url: "/Protocol/AddProtoDetail",
+            data: { id: currentSelectIndex}
+        });*/
+    }
+</script>

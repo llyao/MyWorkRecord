@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<preserve resultType="2" virtualPath="/Views/ProjectCenter/Welcome.cshtml" hash="ffffffffa74ac2d3" filehash="ffffe25ef871558a" flags="110000" assembly="App_Web_aynmzfcq" type="ASP._Page_Views_ProjectCenter_Welcome_cshtml">
+    <filedeps>
+        <filedep name="/Views/ProjectCenter/Welcome.cshtml" />
+    </filedeps>
+</preserve>

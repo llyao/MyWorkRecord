@@ -1,0 +1,98 @@
+﻿@using System.Text.RegularExpressions
+@using ClientApp.DB
+
+@{
+    ViewBag.Title = "Introduction";
+}
+
+@RenderPage("~/Views/Shared/_NavLeft.cshtml")
+<div class="nav-right">
+    <h3 class="nav_right_h1title">文档链接</h3>
+    <p>
+        <a href="http://wwww.baidu.com" target="_blank">程序员svn</a>
+    </p>
+
+    @if (ViewData["versionData"] != null)
+    {
+        ProjectVersionData versionData = ViewData["versionData"] as ProjectVersionData;
+        <h3 class="nav_right_h1title">svn 地址</h3>
+        <p>
+            <a href="@versionData.ClientSvn" target="_blank">程序员svn</a>
+        </p>
+
+        <p>
+            <a href="@versionData.DesignerSvn" target="_blank">策划svn</a>
+        </p>
+
+        <p>
+            <a href="@versionData.ArtSvn" target="_blank">美术svn</a>
+        </p>
+
+
+        <h3 class="nav_right_h1title">负责人联系方式</h3>
+        var a = versionData.ContactInfo;
+        string[] sArray = a.Split('|');
+        foreach(var c in sArray)
+        {
+            <p style="word-break:break-all;">@c</p>
+        }
+        
+    }
+
+    
+
+
+
+    <h3 class="nav_right_h1title">版本下载</h3>
+    <ul class="list-group" style="height: 300px; overflow: auto;">
+        <li class="list-group-item">
+            SuperStar180811.apk
+            <button type="button" class="btn btn-success" onclick="Ceshi()">下载</button>
+        </li>
+        <li class="list-group-item">
+            SuperStar180812.apk
+            <button type="button" class="btn btn-success">下载</button>
+        </li>
+        <li class="list-group-item">
+            SuperStar180813.apk
+            <button type="button" class="btn btn-success">下载</button>
+        </li>
+        <li class="list-group-item">
+            SuperStar180814.apk
+            <button type="button" class="btn btn-success">下载</button>
+        </li>
+        <li class="list-group-item">
+            SuperStar180815.apk
+            <button type="button" class="btn btn-success">下载</button>
+        </li>
+        <li class="list-group-item">
+            SuperStar180816.apk
+            <button type="button" class="btn btn-success">下载</button>
+        </li>
+        <li class="list-group-item">
+            SuperStar180816.apk
+            <button type="button" class="btn btn-success">下载</button>
+        </li>
+        <li class="list-group-item">
+            SuperStar180817.apk
+            <button type="button" class="btn btn-success">下载</button>
+        </li>
+        <li class="list-group-item">
+            SuperStar180818.apk
+            <button type="button" class="btn btn-success">下载</button>
+        </li>
+    </ul>
+
+</div> <!-- /container -->  
+
+<script type="text/javascript">
+
+    function Ceshi()
+    {
+        var a = "<%=Getstr()%>";
+        alert(a);
+    }
+
+</script>
+
+

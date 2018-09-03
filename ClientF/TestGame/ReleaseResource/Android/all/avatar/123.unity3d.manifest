@@ -1,0 +1,31 @@
+ManifestFileVersion: 0
+CRC: 2619585999
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8dd9db53fa73feef3ab8853bd6f438a0
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 93bea3c59194061aa2018b1f7751d49c
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/avatar/123.prefab
+Dependencies:
+- E:/Work/ClientFramework/TestGame/ReleaseResource/Android/all/all_ma/newmaterial.unity3d

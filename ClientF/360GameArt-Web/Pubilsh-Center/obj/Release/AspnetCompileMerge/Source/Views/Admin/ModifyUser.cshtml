@@ -1,0 +1,81 @@
+﻿@using ClientApp.DB
+@using ClientApp.Utils
+@using ClientCore.DB
+@{
+    ViewBag.Title = "编辑用户";
+}
+
+@RenderPage("~/Views/Shared/_AdminNavLeft.cshtml")
+
+<div class="detail">
+    <table>
+        @{
+            UserTableData user = ViewData["user"] as UserTableData;
+        }
+        <tbody>
+        <tr>
+            <td class="textAlign_R">
+                <span class="spanTip">*</span>账户名：
+            </td>
+            <td>
+                <input type="text" disabled="disabled" id="accountText" value="@user.Nick" class="normal">
+            </td>
+        </tr>
+        <tr>
+            <td class="textAlign_R">
+                <span class="spanTip">*</span>权限：
+            </td>
+            <td>
+                <select id="authorityText" class="normal_select" style="width: 100px" name="authorityText">
+                    
+                    @foreach(var role in RoleType.ALL)
+                    {
+                        if(role.Authority == user.Authority)
+                        {
+                            <option value="@role.Authority" selected="selected">@role.RoleName</option>
+                        }
+                        else
+                        {
+                            <option value="@role.Authority">@role.RoleName</option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                <button class="btn btn-info my-2 my-sm-0" type="button" onclick="saveHandle()">保存</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+    function saveHandle() {
+        var params = GetParams();
+        var userID = params["userID"];
+        var accountText = document.getElementById("accountText").value;
+        var authority = document.getElementById("authorityText").value;
+        $.ajax({
+            type: "Post",
+            url: "/Admin/EditUser",
+            data: { userID: userID, authority: authority },
+            success: function (data) {
+                if (data.Success.toString().toLocaleLowerCase() == "false") {
+                    bootbox.alert(data.Message);
+                } else {
+                    bootbox.alert("操作完成", function() {
+                        window.location.href = "/Admin/UserList";
+                    });
+                }
+            }
+        });
+    };
+
+</script>

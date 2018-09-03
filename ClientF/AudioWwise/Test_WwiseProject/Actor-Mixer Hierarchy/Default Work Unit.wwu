@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{51CDE4E5-FD63-422C-87DD-BE1DF1D1E545}" SchemaVersion="89">
+	<AudioObjects>
+		<WorkUnit Name="Default Work Unit" ID="{51CDE4E5-FD63-422C-87DD-BE1DF1D1E545}" PersistMode="Standalone">
+			<ChildrenList>
+				<Sound Name="aaa" ID="{8B0E65C7-EBD8-4447-AEB7-8BB828D3F662}" ShortID="744724579">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9F50A11C-4E06-4603-A6B5-C959AE71F78D}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95B2C803-01FC-444C-ABDE-500865EF653A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="卡农" ID="{FD8CD817-E599-4B25-B64D-2D8BF3BC643C}" ShortID="167383148">
+							<Language>SFX</Language>
+							<AudioFile>卡农.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="卡农" ID="{FD8CD817-E599-4B25-B64D-2D8BF3BC643C}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+			</ChildrenList>
+		</WorkUnit>
+	</AudioObjects>
+</WwiseDocument>

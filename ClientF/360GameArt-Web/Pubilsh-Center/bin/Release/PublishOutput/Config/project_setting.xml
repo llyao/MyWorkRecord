@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+  <toggle desc="更新模块" name="update" />
+  <toggle desc="UI模块" name="ui" />
+  <toggle desc="网络模块" name="net" />
+  <toggle desc="协议模块" name="netCmd" />
+  <toggle desc="渠道SDK" name="channelSDK" />
+  <input desc="资源服务器地址" name="resURL" />
+  <input desc="游戏服务器地址" name="gameURL" />
+  <input desc="包名" name="gameURL" />
+  <input desc="keystore" name="gameURL" />
+  <input desc="password" name="gameURL" />
+  <input desc="版本号" name="gameURL" />
+  <input desc="Mini API Level" name="gameURL" />
+  <input desc="target API Level" name="gameURL" />
+</root>

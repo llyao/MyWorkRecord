@@ -1,0 +1,29 @@
+﻿@using ClientApp.DB
+@using ClientApp.Utils
+@using ClientCore.DB
+
+@{
+    ViewBag.Title = "UserList";
+}
+@RenderPage("~/Views/Shared/_AdminNavLeft.cshtml")
+<div class="nav-right">
+    <h1>用户列表</h1>
+    <div style="width: 500px;overflow-y: auto; overflow-x: hidden; max-height: 600px">
+        <div class="list-group">
+            @foreach (UserTableData user in (ViewData["userList"] as List<UserTableData>))
+            {
+                <p><button style="width: 100%" onclick="userClickHandle(@user.ID)" class="btn btn-default">
+                    <h4 class="list-group-item-heading">用户名：@user.Nick</h4>
+                    <p class="list-group-item-text">权限：@RoleType.GetRoleName(user.Authority)</p>
+                </button></p>
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function userClickHandle(userID) {
+        //bootbox.alert('XXX');
+        window.location.href = "/Admin/ModifyUser?userID=" + userID;
+    }
+</script>

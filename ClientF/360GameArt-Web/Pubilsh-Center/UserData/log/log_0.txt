@@ -1,0 +1,4 @@
+2018-08-31 18:08:38.935 INFO  [027] ClientCore.Logging.Logger GameInitState -> GameBootState  
+2018-08-31 18:08:39.148 INFO  [022] ClientCore.Logging.Logger GameBootState -> GameEnterState  
+2018-08-31 18:08:39.214 TRACE [022] ClientCore.Logging.Logger Current log is E:\ClientFramework\360GameArt-Web\Pubilsh-Center\UserData/log/log_0.txt and E:\ClientFramework\360GameArt-Web\Pubilsh-Center\UserData/log/log_0_verbose.txt  
+2018-08-31 18:08:43.727 TRACE [025] ClientCore.Logging.Logger admin 登录了  

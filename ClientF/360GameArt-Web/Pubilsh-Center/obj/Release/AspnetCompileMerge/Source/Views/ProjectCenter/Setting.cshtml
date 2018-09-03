@@ -1,0 +1,225 @@
+﻿@using ClientApp.XmlData
+@{
+    ViewBag.Title = "项目配置";
+}
+
+
+
+@RenderPage("~/Views/Shared/_NavLeft.cshtml")
+<div class="nav-right">
+    <h4></h4>
+    @{
+        var toggleNames = "";
+        var settingData = ViewData["settingData"] as XmlVersionSettingData;
+        ViewData["json"] = Json.Encode(settingData);
+        for(var i = 0; i < settingData.ToggleNodes.Count; i++)
+        {
+            var toggleNode = settingData.ToggleNodes[i];
+            if(toggleNode.Selected)
+            {
+                <button id="@toggleNode.Name" type="button" class="btn btn-primary btn-lg" onclick="onCheckBoxClick(event)">@toggleNode.Desc</button>
+            }
+            else
+            {
+                <button id="@toggleNode.Name" type="button" class="btn btn-default btn-lg" onclick="onCheckBoxClick(event)">@toggleNode.Desc</button>
+            }
+            toggleNames += toggleNode.Name;
+            if(i != settingData.ToggleNodes.Count - 1)
+            {
+                toggleNames += "|";
+            }
+        }
+        ViewData["toggleNames"] = toggleNames;
+
+        <h4></h4>
+        for(var i = 0; i < settingData.InputNodes.Count; i++)
+        {
+            var inputNode = settingData.InputNodes[i];
+            <div class="input-group">
+                <span class="input-group-addon btn-block" style="width: 150px">@inputNode.Desc：</span>
+                <div id="@inputNode.Name" style="border: 1px solid #000; height: 40px; line-height: 40px; padding: 0px 20px; width: 700px;" contenteditable="true">@inputNode.Value</div>
+                <!--<input type="text" class="form-control" id="@inputNode.Name" style="width: 700px" aria-describedby="basic-addon3" value="@inputNode.Value">-->
+            </div>
+            <h4></h4>
+        }
+    }
+    <div style="padding-bottom: 0px; width: 850px">
+        <div >
+            <div class="input-group-addon btn-block">
+                <span style="width: 150px">资源路径设置：</span>
+                <button id="btn_add" type="button" class="btn btn-success" onClick="addNewTable();">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增表格
+                </button>
+            </div>
+            <div id="allTableDIV" "style="border: 1px solid #000;">
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-lg btn-danger " style="width: 350px; margin: 0 auto; margin-left: 250px;" onclick="saveHandle()">保存</button>
+</div>
+
+<script type="text/javascript">
+    var tableCount = 0;
+    var allTableDIV = document.getElementById("allTableDIV");
+
+    //从表里读取出来的Table
+    function addReadedTable(resNode) {
+        addTable(resNode.Type, resNode.TypeName);
+        for (var i = 0; i < resNode.Paths.length; i++) {
+            _addRow(tableCount - 1, resNode.Paths[i]);
+        }
+    }
+
+    function addNewTable() {
+        addTable("avatar", "prefab");
+    }
+
+    function addTable(type, typeName, res) {
+        var tab = '<table id="table_' +
+            tableCount +
+            '" class="table table-bordered" style="border: crimson;table-layout: fixed;word-break: break-all; word-wrap: break-word;">';
+        tab += '<tr><td colspan="2" style="background: #cccccc;text-align: center; height: 30px;line-height: 40px; "><div>';
+        tab += '<button id="deleteTable_' +
+            tableCount +
+            '" type="button" class="btn btn-default" onclick="removeTable(event)" style="float: right;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除当前表格</button> ' +
+            '<button id="addLine_' +
+            tableCount +
+            '"type="button" class="btn btn-default" onclick="addRow(event)" style="float: right;"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增一行</button></div ></td ></tr > ';
+
+        tab += '<tr><td style="text-align: center; height: 30px;line-height: 30px; "><div contenteditable="true" >' +
+            typeName +
+            '</div></td>';
+        tab += '<td style="text-align: center; height: 30px;line-height: 30px; "><div contenteditable="true" >' +
+            type +
+            '</div></td></tr>';
+
+
+        tab += '<tbody>';
+
+        
+
+        tab += '</tbody>';
+        tab += '</table>';
+
+        allTableDIV.innerHTML += tab;
+
+        tableCount++;
+    }
+
+    //移除表格
+    function removeTable(event) {
+        var btnName = event.target.id;
+        var tableID = btnName.substring(btnName.indexOf("_") + 1);
+        var oTable = document.getElementById("table_" + tableID);
+        oTable.remove();
+    }
+
+    //添加行
+    function addRow(event) {
+        var btnName = event.target.id;
+        var tableID = btnName.substring(btnName.indexOf("_") + 1);
+        _addRow(tableID, "Assets/");
+    }
+
+    function _addRow(tableID, path) {
+        var oTable = document.getElementById("table_" + tableID);
+        var tBodies = oTable.tBodies;
+        var tbody = tBodies[0];
+        var tr = tbody.insertRow(tbody.rows.length);
+
+        var td = document.createElement("td");
+        td.colSpan = 2;
+        td.innerHTML = '<div contenteditable="true">' +
+            path +
+            '<button id="deleteLine_' +
+            tableID +
+            '_' +
+            (tbody.rows.length - 2) +
+            '" type="button" onclick="deleteCurrentRow(this)" class="btn btn-default" style="float: right;">' +
+            '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除当前行</button></div>';
+        td.style = 'text-align: center; height: 30px;line-height: 40px; ';
+        tr.appendChild(td);
+    }
+
+    //删除行
+    function deleteCurrentRow(obj) {
+        var tr = obj.parentNode.parentNode;
+        var tbody = tr.parentNode;
+        var index = -1;
+        for (var i = 0; i < tbody.parentNode.rows.length; i++) {
+            if (tbody.parentNode.rows[i] == tbody) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            tbody.parentNode.deleteRow(index);
+        }
+        
+    }
+
+    var jsonstr = '@ViewData["json"]';
+    jsonstr = jsonstr.replace(/&quot;/g, '"');
+    var obj = JSON.parse(jsonstr);
+    for (var i = 0; i < obj.ResNodes.length; i++) {
+        addReadedTable(obj.ResNodes[i]);
+    }
+    //alert(obj.ToggleNodes[0].Desc);
+
+    var selectedClass = "btn btn-primary btn-lg";
+    var unselectedClass = "btn btn-default btn-lg";
+
+    function onCheckBoxClick(e) {
+        if (e.target.className == selectedClass) {
+            e.target.className = unselectedClass;
+        } else {
+            e.target.className = selectedClass;
+        }
+    }
+
+    function saveHandle() {
+        for (var i = 0; i < obj.ToggleNodes.length; i++) {
+            var toggle = document.getElementById(obj.ToggleNodes[i].Name);
+            obj.ToggleNodes[i].Selected = toggle.className == selectedClass;
+        }
+        for (var i = 0; i < obj.InputNodes.length; i++) {
+            var input = document.getElementById(obj.InputNodes[i].Name);
+            obj.InputNodes[i].Value = input.value;
+        }
+
+        obj.ResNodes = [];
+        for (var i = 0; i < tableCount; i++) {
+            var table = document.getElementById("table_" + i);
+            if (table != undefined) {
+                var resNode = {};
+                resNode.TypeName = table.rows[1].cells[0].childNodes[0].childNodes[0].textContent;
+                resNode.Type = table.rows[1].cells[1].childNodes[0].childNodes[0].textContent;
+                var Paths = [];
+                for (var j = 2; j < table.rows.length ; j++) {
+                    var td = table.rows[j].cells[0];
+                    Paths.push(td.childNodes[0].childNodes[0].textContent);
+                }
+                resNode.Paths = Paths;
+                obj.ResNodes.push(resNode);
+            }
+        }
+        $.ajax({
+            type: "Post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/ProjectCenter/SaveSetting",
+            data: JSON.stringify(obj),
+            async: true,
+            success: function(data) {
+                if (data.Success.toString().toLocaleLowerCase() == "false") {
+                    bootbox.alert("错误：" + data.Message);
+                } else {
+                    bootbox.alert("保存成功！");
+                }
+            }
+        });
+    }
+
+
+</script>

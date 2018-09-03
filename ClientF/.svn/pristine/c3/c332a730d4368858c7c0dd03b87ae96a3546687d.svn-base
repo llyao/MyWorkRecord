@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioWwise", "AudioWwise.csproj", "{BECA813A-9818-0DFB-7B42-AF9AC40DD63B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BECA813A-9818-0DFB-7B42-AF9AC40DD63B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BECA813A-9818-0DFB-7B42-AF9AC40DD63B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BECA813A-9818-0DFB-7B42-AF9AC40DD63B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BECA813A-9818-0DFB-7B42-AF9AC40DD63B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

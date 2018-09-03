@@ -1,0 +1,101 @@
+<project name="Builder">
+
+<!--=============================================-->
+
+	<target name="initConfig">
+		<echo>initial config</echo>
+		<property file="./config/config.txt" />
+		<echo>initial gameConfig</echo>
+		<property file="./config/gameConfig.txt" />
+		<echo>initial dllConfig</echo>
+		<property file="./config/dllConfig.txt"/>
+	</target>	
+		
+<!--=============================================-->
+
+	<target name="update" depends="initConfig">		
+		<echo>update coreDll code ${dllSrc.CoreSrcPath}</echo>
+		<ant antfile="./Tools/SvnUtils.xml" target="svnrevert">
+			<property name="distdir" value="${dllSrc.CoreSrcPath}" />
+		</ant>	
+		<echo>update coreDll project ${dllSrc.CoreSrcPath}</echo>
+		<ant antfile="./Tools/SvnUtils.xml" target="svnrevert">
+			<property name="distdir" value="${autoBuildDll.coreDllPath}" />
+		</ant>	
+	</target>	
+
+<!--=============================================-->
+
+	<target name="buildCoreDll" depends="update">
+		<echo>delete coreDll code ${autoBuildDll.coreDllSrc}</echo>
+		<delete dir="${autoBuildDll.coreDllSrc}" />
+		
+		<echo>copy coreDll code ${dllSrc.CoreSrcPath} to ${autoBuildDll.coreDllSrc}</echo>
+		<copy todir="${autoBuildDll.coreDllSrc}" overwrite="true">
+			<fileset dir="${dllSrc.CoreSrcPath}">
+			</fileset>
+		</copy>
+
+		<echo>gen buildNumber:</echo>
+		<buildnumber file="${buildNumber.coreDll}" />
+		<echo>${build.number}</echo>
+		
+		<property name="buildType" value="Release"/>
+
+		<echo>build coreDLL ${ms.builderPath}/MSBuild.exe ${autoBuildDll.coreDllSln} /t:rebuild /v:q /p:Configuration=${buildType}</echo>
+		<exec executable="${ms.builderPath}/MSBuild.exe">
+			<arg value="${autoBuildDll.coreDllSln}"/>
+			<arg value="/t:rebuild"/>
+			<arg value="/v:q"/>
+			<arg value="/p:Configuration=${buildType}"/>
+	    </exec>
+
+		<echo>copy coreDLL ${autoBuildDll.coreDllRelease} to ${autoBuildDll.dllPath}/coreDll.dll</echo>
+		<move tofile="${autoBuildDll.dllPath}/coreDll.dll" file="${autoBuildDll.coreDllRelease}" overwrite="true"/>
+
+		<echo>gen hash</echo>
+		<exec executable="python">
+			<arg value="./python/getSingleHash.py" />
+			<arg value="${autoBuildDll.dllPath}/coreDll.dll" />
+			<arg value="${autoBuildDll.dllPath}/coreDll.txt" />
+		</exec>
+	</target>
+
+<!--=============================================-->
+
+	<target name="buildHotDll" depends="update">
+		<echo>delete coreDll code ${autoBuildDll.coreDllSrc}</echo>
+		<delete dir="${autoBuildDll.coreDllSrc}" />
+		
+		<echo>copy coreDll code ${dllSrc.CoreSrcPath} to ${autoBuildDll.coreDllSrc}</echo>
+		<copy todir="${autoBuildDll.coreDllSrc}" overwrite="true">
+			<fileset dir="${dllSrc.CoreSrcPath}">
+			</fileset>
+		</copy>
+
+		<echo>gen buildNumber:</echo>
+		<buildnumber file="${buildNumber.coreDll}" />
+		<echo>${build.number}</echo>
+		
+		<property name="buildType" value="Release"/>
+
+		<echo>build coreDLL ${ms.builderPath}/MSBuild.exe ${autoBuildDll.coreDllSln} /t:rebuild /v:q /p:Configuration=${buildType}</echo>
+		<exec executable="${ms.builderPath}/MSBuild.exe">
+			<arg value="${autoBuildDll.coreDllSln}"/>
+			<arg value="/t:rebuild"/>
+			<arg value="/v:q"/>
+			<arg value="/p:Configuration=${buildType}"/>
+	    </exec>
+
+		<echo>copy coreDLL ${autoBuildDll.coreDllRelease} to ${autoBuildDll.dllPath}/coreDll.dll</echo>
+		<move tofile="${autoBuildDll.dllPath}/coreDll.dll" file="${autoBuildDll.coreDllRelease}" overwrite="true"/>
+
+		<echo>gen hash</echo>
+		<exec executable="python">
+			<arg value="./python/getSingleHash.py" />
+			<arg value="${autoBuildDll.dllPath}/coreDll.dll" />
+			<arg value="${autoBuildDll.dllPath}/coreDll.txt" />
+		</exec>
+	</target>
+
+</project>

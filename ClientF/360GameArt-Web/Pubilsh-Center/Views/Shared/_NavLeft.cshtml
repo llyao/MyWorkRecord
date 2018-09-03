@@ -1,0 +1,79 @@
+﻿@using ClientApp.DB
+
+<div class="nav-left">
+    <script type="text/javascript">
+
+        function versionChangeHandle() {
+            var versionValue = document.getElementById("versionDropdown").value;
+            $.ajax({
+                type: "Post",
+                url: "/ProjectCenterBase/AddProjectVersion",
+                data: { versionValue}
+            });
+        }
+
+    </script>
+    <div class="panel panel-default">
+        <a class="nav-left-list-title active" data-toggle="collapse" href="#collapseListGroup1" aria-expanded="false" aria-controls="collapseListGroup1">
+            项目
+        </a>
+
+        <select id="versionDropdown" onchange="versionChangeHandle()" class="normal_select" style="width: 100%">
+            @foreach(var module in ViewData["versionDatas"] as List<ProjectVersionData>)
+            {
+                if(module.Id.ToString() == ViewData["CurrentProjectVersion"].ToString())
+                {
+                    <option value="@module.Id" selected="selected"> @module.Name</option>
+                }
+                else
+                {
+                    <option value="@module.Id"> @module.Name</option>
+                }
+            }
+
+            }
+        </select>
+        <div id="collapseListGroup1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading1" aria-expanded="false">
+            <ul class="list-group">
+                <a href="/ProjectCenter/Introduction" class="list-group-item">项目信息</a>
+                <a href="/ProjectCenter/Setting" class="list-group-item">项目配置</a>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <a class="nav-left-list-title active" data-toggle="collapse" href="#collapseListGroup2" aria-expanded="false" aria-controls="collapseListGroup2">
+            协议
+        </a>
+        <div id="collapseListGroup2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading1" aria-expanded="false">
+            <ul class="list-group">
+                <a href="/Protocol/ClassificationManagement" class="list-group-item">分类管理</a>
+                <a href="/Protocol/AddProtoIndex" class="list-group-item">添加协议</a>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <a class="nav-left-list-title active" data-toggle="collapse" href="#collapseListGroup3" aria-expanded="false" aria-controls="collapseListGroup3">
+            项目发布
+        </a>
+        <div id="collapseListGroup3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading1" aria-expanded="false">
+            <ul class="list-group">
+                <a href="/Publish/Index?cmd=allpack" class="list-group-item">美术资源</a>
+                <a href="/ProjectCenter/Introduction" class="list-group-item">程序热更</a>
+                <a href="/ProjectCenter/Introduction" class="list-group-item">全部发布</a>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <a class="nav-left-list-title active" data-toggle="collapse" href="#collapseListGroup4" aria-expanded="false" aria-controls="collapseListGroup4">
+            渠道设置
+        </a>
+        <div id="collapseListGroup4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading1" aria-expanded="false">
+            <ul class="list-group">
+                <a href="/ProjectCenter/Introduction" class="list-group-item">渠道A</a>
+                <a href="/ProjectCenter/Introduction" class="list-group-item">渠道B</a>
+                <a href="/ProjectCenter/Introduction" class="list-group-item">渠道C</a>
+                <a href="/ProjectCenter/Introduction" class="list-group-item">渠道D</a>
+            </ul>
+        </div>
+    </div>
+</div>

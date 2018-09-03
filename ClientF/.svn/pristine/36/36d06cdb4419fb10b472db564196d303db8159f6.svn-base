@@ -1,0 +1,24 @@
+﻿<div class="nav-left">
+    <div class="panel panel-default">
+        <a class="nav-left-list-title active" data-toggle="collapse" href="#collapseListGroup1" aria-expanded="false" aria-controls="collapseListGroup1">
+            项目
+        </a>
+        <div id="collapseListGroup1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading1" aria-expanded="false">
+            <ul class="list-group">
+                <a href="/Admin/AddVersion" class="list-group-item">添加版本</a>
+                <a href="/ProjectCenter/Introduction" class="list-group-item">版本列表</a>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <a class="nav-left-list-title active" data-toggle="collapse" href="#collapseListGroup2" aria-expanded="false" aria-controls="collapseListGroup2">
+            用户
+        </a>
+        <div id="collapseListGroup2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading1" aria-expanded="false">
+            <ul class="list-group">
+                <a href="/Admin/AddUser" class="list-group-item">添加用户</a>
+                <a href="/Admin/UserList" class="list-group-item">修改用户</a>
+            </ul>
+        </div>
+    </div>
+</div>

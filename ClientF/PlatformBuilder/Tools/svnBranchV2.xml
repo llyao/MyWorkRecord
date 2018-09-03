@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+
+     项目分支创建工具 创建出v${version}(${Date})
+     如:v1.3(09-23-2013-22:01);
+                 
+     ====================================================================== -->
+
+<project name="branchBuild" default="">
+	<target name="init" description="初始化ant需要用到的所有变量">
+	</target>
+	
+	<target name="svnbranch" description="create a branch" depends="init">
+		<echo>project: ${trunk}  </echo>
+		<echo>branch: ${branch}</echo>
+		<echo>tag: ${tag}</echo>
+		
+		<!--先删除原先的分支-->
+		<exec executable="${basedir}/exe/svnbin/svn.exe">
+			<arg value="delete" />
+			<arg value="--username" />
+			<arg value="${uname}" />
+			<arg value="--password" />
+			<arg value="${upwd}" />
+			<arg value="${branch}" />
+			<arg value="-m" />
+			<arg value="deleteBranch: ${branch}" />
+		</exec>
+		<!--创建分支-->
+		<exec executable="${basedir}/exe/svnbin/svn.exe">
+			<arg value="copy" />
+			<arg value="--username" />
+			<arg value="${uname}" />
+			<arg value="--password" />
+			<arg value="${upwd}" />
+			<arg value="${trunk}" />
+			<arg value="${branch}" />
+			<arg value="-m" />
+			<arg value="createBranch: ${branch}" />
+		</exec>
+				
+		<!--先删除原先的tag-->
+		<exec executable="${basedir}/exe/svnbin/svn.exe">
+			<arg value="delete" />
+			<arg value="--username" />
+			<arg value="${uname}" />
+			<arg value="--password" />
+			<arg value="${upwd}" />
+			<arg value="${tag}" />
+			<arg value="-m" />
+			<arg value="deleteTag: ${tag}" />
+		</exec>
+			
+		<!--然后创建最新的tag-->
+		<exec executable="${basedir}/exe/svnbin/svn.exe">
+			<arg value="copy" />
+			<arg value="--username" />
+			<arg value="${uname}" />
+			<arg value="--password" />
+			<arg value="${upwd}" />
+			<arg value="${trunk}" />
+			<arg value="${tag}" />
+			<arg value="-m" />
+			<arg value="createTag: ${tag}" />
+		</exec>
+	</target>
+</project>

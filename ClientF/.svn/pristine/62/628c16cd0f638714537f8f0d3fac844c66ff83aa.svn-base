@@ -1,0 +1,10 @@
+﻿
+
+@{
+    ViewBag.Title = "我是管理员";
+}
+
+
+@RenderPage("~/Views/Shared/_AdminNavLeft.cshtml")
+<h2>Index</h2>
+

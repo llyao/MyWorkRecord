@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxUID="2">
+  <item uid="2" startID="1" endID="100" name="Login" desc="登录" />
+</root>

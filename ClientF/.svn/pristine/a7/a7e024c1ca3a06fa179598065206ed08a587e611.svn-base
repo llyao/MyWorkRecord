@@ -1,0 +1,92 @@
+<project name="SvnUtils" >
+		
+	<target name="init">
+		<property file="./BuilderConfig/config.txt" />
+	</target>
+
+	<target name="svncheckout" depends="init">
+		<echo> checkout ${svn} to ${distdir} </echo>
+		<exec executable="${svn.path}/svn.exe">
+			<arg value="checkout" />
+			<arg value="--username" />
+			<arg value="${svn.name}" />
+			<arg value="--password" />
+			<arg value="${svn.password}" />
+			<arg value="${svn}" />
+			<arg value="${distdir}" />
+
+
+		</exec>
+	</target>	
+	
+	<target name="svnupdate" depends="init">
+		<exec executable="${svn.path}/svn.exe">
+			<arg value="update" />
+			<arg value="--username" />
+			<arg value="${svn.name}" />
+			<arg value="--password" />
+			<arg value="${svn.password}" />
+			<arg value="${distdir}" />
+		</exec>
+	</target>
+
+	<target name="svnrevert" depends="init">
+		<exec executable="${svn.path}/svn.exe">
+			<arg value="revert" />
+			<arg value="--username" />
+			<arg value="${svn.name}" />
+			<arg value="--password" />
+			<arg value="${svn.password}" />
+			<arg value="${distdir}" />
+			<arg value="-R" />
+		</exec>
+		
+		<exec executable="${svn.path}/svn.exe">
+			<arg value="update" />
+			<arg value="--username" />
+			<arg value="${svn.name}" />
+			<arg value="--password" />
+			<arg value="${svn.password}" />
+			<arg value="${distdir}" />
+			<arg value="--force" />
+		</exec>
+	</target>
+	
+	<target name="svncommit" depends="init">
+		<exec executable="${svn.path}/svn.exe">
+			<arg value="commit" />
+			<arg value="--username" />
+			<arg value="${svn.name}" />
+			<arg value="--password" />
+			<arg value="${svn.password}" />
+			<arg value="${distdir}" />
+			<arg value="-m" />
+			<arg value="--${message}" />
+		</exec>
+	</target>
+	
+    <target name="svnaddall" depends="init">
+    	<exec executable="${svn.path}/svn.exe">
+			<arg value="add" />
+			<arg value="--username" />
+			<arg value="${svn.name}" />
+			<arg value="--password" />
+			<arg value="${svn.password}" />
+			<arg value="${distdir}" />
+    		<arg value="--force" />
+		</exec>
+    </target>
+
+
+	<target name="svnfino" depends="init">
+		<exec executable="${dir.base}/exe/svnbin/svn.exe" output="${info_output}">
+			<arg value="info" />
+			<arg value="--username" />
+			<arg value="${svn.name}" />
+			<arg value="--password" />
+			<arg value="${svn.password}" />
+			<arg value="${svn}" />
+		</exec>
+	</target>
+	
+</project>

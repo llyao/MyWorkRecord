@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Android" BasePlatform="Android" SchemaVersion="11" SoundbankVersion="132">
+	<RootPaths>
+		<ProjectRoot>C:\D301\Test\Test_WwiseProject\</ProjectRoot>
+		<SourceFilesRoot>C:\D301\Test\Test_WwiseProject\.cache\Android\</SourceFilesRoot>
+		<SoundBanksRoot>C:\D301\Test\Test_WwiseProject\GeneratedSoundBanks\Android\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>C:\D301\Test\Test_WwiseProject\GeneratedSoundBanks\Android</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<StreamedFiles/>
+	<MediaFilesNotInAnyBank/>
+	<SoundBanks>
+		<SoundBank Id="534561221" Language="SFX">
+			<ObjectPath>\SoundBanks\Default Work Unit\MainSoundBank</ObjectPath>
+			<ShortName>MainSoundBank</ShortName>
+			<Path>MainSoundBank.bnk</Path>
+			<IncludedEvents>
+				<Event Id="3330546163" Name="TTest" ObjectPath="\Events\Default Work Unit\TTest"/>
+			</IncludedEvents>
+			<IncludedMemoryFiles>
+				<File Id="167383148" Language="SFX">
+					<ShortName>卡农.wav</ShortName>
+					<Path>SFX\卡农_56D34C19.wem</Path>
+				</File>
+			</IncludedMemoryFiles>
+		</SoundBank>
+		<SoundBank Id="1355168291" Language="SFX">
+			<ObjectPath>Init</ObjectPath>
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>

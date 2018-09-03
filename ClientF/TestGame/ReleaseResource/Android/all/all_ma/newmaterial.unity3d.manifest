@@ -1,0 +1,21 @@
+ManifestFileVersion: 0
+CRC: 3353808216
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 045de81b82d95ae5f6c5599f7e617e6a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cc983a3149e5fb03ce027e70c7a1a559
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/New Material.mat
+Dependencies:
+- E:/Work/ClientFramework/TestGame/ReleaseResource/Android/all/all_bi/obj_level_rec01.unity3d

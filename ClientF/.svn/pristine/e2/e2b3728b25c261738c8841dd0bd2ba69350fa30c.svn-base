@@ -1,0 +1,64 @@
+
+<project name="Builder">
+
+<!--=============================================-->
+
+	<target name="initConfig">
+		<property file="./config/config.txt" />
+		<property file="./config/gameConfig.txt" />
+	</target>
+
+<!--=============================================-->
+
+	<target name="update" depends="initConfig">		
+		<echo>${dir.projectRoot}/${dir.projectName}</echo>
+		<ant antfile="./Tools/SvnUtils.xml" target="svnrevert">
+			<property name="distdir" value="${dir.projectRoot}/${dir.projectName}" />
+		</ant>	
+		<ant antfile="./Tools/SvnUtils.xml" target="svnrevert">
+			<property name="distdir" value="${dir.releaseResource}" />
+		</ant>
+	</target>	
+	
+<!--=============================================-->
+
+	<target name="buildAssetbundle" depends="update">
+		<property name="projectPath" value="${dir.projectRoot}/${dir.projectName}"/>
+		<echo>unity build assetbundle project : ${projectPath} exportTo : ${dir.releaseResource}</echo>
+		<exec executable="${UNITY_HOME}" resultproperty="resultV">
+			<arg value="-projectPath" />
+			<arg value="${projectPath}" />
+			<arg value="-executeMethod"/>
+			<arg value="ProjectBuildAssetBundle.AutoBuildAssetBoundle"/>
+			<arg value="-exportTo" />
+			<arg value="${dir.releaseResource}"/>
+			<arg value="-logFile" />
+			<arg value="${log.file}"/>
+			<arg value="-nographics"/>
+			<arg value="-batchmode"/>
+			<arg value="-quit"/>
+		</exec>		
+		<echo>unity publish success</echo>
+		<antcall target="makeHash"/>
+		<ant antfile="./Tools/SvnUtils.xml" target="svnaddall">
+			<property name="distdir" value="${dir.releaseResource}" />
+		</ant>	
+		<ant antfile="./Tools/SvnUtils.xml" target="svncommit">
+			<property name="distdir" value="${dir.releaseResource}" />
+			<property name="message" value="auto package" />
+		</ant>	
+	</target>	
+
+	<target name="makeHash" >	
+	<echo>makeHash ${dir.releaseResource} ${dir.releaseResource}/v.txt</echo>	
+		<exec executable="python">
+			<arg value="./python/getHashList.py" />
+			<arg value="${dir.releaseResource}" />
+			<arg value="${dir.releaseResource}/v.txt" />
+			<arg value="/Android/,/data/,/config/" />
+		</exec>		
+	</target>
+	
+<!--=============================================-->		
+
+</project>

@@ -1,0 +1,14 @@
+ManifestFileVersion: 0
+CRC: 2378366701
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 1b7127937203fe020e959ce84e864cb3
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 31d6cfe0d16ae931b73c59d7e0c089c0
+HashAppended: 0
+ClassTypes: []
+Assets:
+- Assets/scenes/ILrunitme.unity
+Dependencies: []

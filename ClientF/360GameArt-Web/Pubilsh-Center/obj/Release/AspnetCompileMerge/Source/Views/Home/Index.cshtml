@@ -1,0 +1,17 @@
+﻿@using ClientCore.DB
+
+@{
+    ViewBag.Title = "Welcome";
+}
+
+
+@RenderPage("~/Views/Shared/_NavLeft.cshtml")
+
+@{
+    if (Session["user"] != null)
+    {
+        var user = (Session["user"] as UserTableData);
+        <div style="text-align: center"><h2 >你好啊， @user.Nick </h2></div>;
+    }
+}
+

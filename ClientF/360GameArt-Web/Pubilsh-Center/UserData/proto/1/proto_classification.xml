@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxUID="6">
+  <item uid="1" startID="1" endID="100" name="Login" desc="登录" />
+  <item uid="2" startID="101" endID="200" name="Bag" desc="背包" />
+  <item uid="4" startID="501" endID="600" name="Fight" desc="战斗" />
+  <item uid="5" startID="601" endID="700" name="Pet" desc="宠物相关" />
+  <item uid="6" startID="701" endID="800" name="Rune" desc="符文" />
+</root>
